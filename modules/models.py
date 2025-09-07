@@ -1,21 +1,16 @@
 
 from . import gauss
-from . import mfn
 from . import relu
 from . import siren 
 from . import wire
 from . import wire2d
-from . import incode
-
 
 model_dict = {'gauss': gauss,
-              'mfn': mfn,
               'relu': relu,
               'siren': siren,
               'wire': wire,
               'wire2d': wire2d,
-              'ffn': None,
-              'incode': incode}
+              'ffn': None}
 
 
 class INR():
