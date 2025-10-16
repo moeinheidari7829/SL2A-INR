@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="SL²A-INR: Single-Layer Learnable Activation for Implicit Neural Representation - ICCV 2025">
+  <meta name="keywords" content="implicit neural representation, INR, learnable activation, Chebyshev polynomials, ICCV 2025">
+  <meta name="author" content="Moein Heidari, Reza Rezaeian, Reza Azad, Dorit Merhof, Hamid Soltanian-Zadeh, Ilker Hacihaliloglu">
+  <title>SL²A-INR: Single-Layer Learnable Activation for Implicit Neural Representation | ICCV 2025</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/style.css">
+</head>
+<body>
+  <header class="hero" id="top">
+    <nav class="nav">
+      <a class="brand" href="#top">SL²A-INR</a>
+      <button class="nav-toggle" aria-label="Toggle navigation"></button>
+      <ul class="nav-links">
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#method">Method</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#analysis">Analysis</a></li>
+        <li><a href="#resources">Resources</a></li>
+      </ul>
+    </nav>
+    <div class="hero-content">
+      <span class="badge">✨ ICCV 2025 ✨</span>
+      <h1>SL²A-INR</h1>
+      <p class="hero-subtitle">Single-Layer Learnable Activation for Implicit Neural Representation</p>
+      <p class="hero-copy">
+        A novel hybrid INR architecture combining Chebyshev-parameterized learnable activations with a lightweight ReLU fusion network, 
+        enabling adaptive spectral-bias tuning and achieving state-of-the-art performance across image representation, 
+        3D shape reconstruction, and neural radiance fields.
+      </p>
+      <div class="cta-group">
+        <a class="btn primary" href="https://arxiv.org/abs/2409.10836" target="_blank" rel="noreferrer noopener">arXiv</a>
+        <a class="btn outline" href="https://github.com/Iceage7/SL2A-INR" target="_blank" rel="noreferrer noopener">Code</a>
+        <a class="btn outline" href="./assets/paper.pdf" target="_blank" rel="noreferrer noopener">PDF</a>
+      </div>
+      <ul class="author-list">
+        <li><strong>Moein Heidari*</strong></li>
+        <li><strong>Reza Rezaeian*</strong></li>
+        <li>Reza Azad</li>
+        <li>Dorit Merhof</li>
+        <li>Hamid Soltanian-Zadeh†</li>
+        <li>Ilker Hacihaliloglu‡</li>
+      </ul>
+      <p class="affiliation-note">*Equal contribution, †‡Corresponding authors</p>
+      <div class="institution-list">
+        <span>University of British Columbia</span>
+        <span>University of Tehran</span>
+        <span>RWTH Aachen University</span>
+        <span>University of Regensburg</span>
+      </div>
+    </div>
+    
+    <!-- Teaser Figure on First Page -->
+    <div class="hero-teaser-section">
+      <div class="teaser-text">
+        <h2>SL²A-INR Overview</h2>
+        <p>
+          SL²A-INR enables flexible tuning of spectral bias through learnable activation. The architecture combines a 
+          Learnable Activation Block (Ψ) parameterized by Chebyshev polynomials with a feature fusion network.
+        </p>
+        <p>
+          As polynomial degree K increases (4→64), reconstruction quality improves significantly, demonstrating enhanced 
+          capacity for detailed representations. This design addresses the convergence-capacity gap found in comparable methods.
+        </p>
+      </div>
+      <figure class="teaser-figure">
+        <img src="./assets/teaser.png" alt="SL²A-INR method overview showing learnable activation block and reconstruction quality">
+        <figcaption>
+          Architecture and reconstruction quality progression with increasing polynomial degree K.
+        </figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <main>
+    <!-- Abstract Section -->
+    <section class="section" id="abstract">
+      <div class="section-heading">
+        <h2>Abstract</h2>
+      </div>
+      <div class="section-grid">
+        <div class="text-col">
+          <p>
+            Implicit Neural Representations (INRs) excel at modeling continuous signals but often struggle with spectral bias—learning 
+            low frequencies first and missing fine high-frequency structure. Current methods using hand-crafted activation functions 
+            (SIREN, WIRE, FINER) or positional encodings still face limitations in capturing diverse signal types and high-frequency components.
+          </p>
+          <p>
+            We introduce <strong>SL²A-INR</strong>, a hybrid architecture that combines a <em>learnable Chebyshev activation block</em> 
+            with a lightweight <em>ReLU fusion network</em>. The Chebyshev polynomials learn higher-order coefficients directly, 
+            expanding the representable frequency range without fragile periodic initialization. The fusion block modulates feature 
+            flow through skip connections, enabling adaptive spectral control, sharper reconstructions, and faster convergence.
+          </p>
+          <p>
+            Through comprehensive experiments, SL²A-INR sets new benchmarks in accuracy, quality, and robustness across image representation, 
+            3D shape reconstruction, and novel view synthesis tasks.
+          </p>
+        </div>
+        <figure class="media-col">
+          <img src="./assets/teaser.png" alt="SL²A-INR architecture diagram showing Learnable Activation Block and Fusion Block">
+          <figcaption>
+            <strong>Figure 1:</strong> SL²A-INR architecture. The Learnable Activation Block (Ψ) parameterized by Chebyshev polynomials 
+            is followed by a feature fusion block with skip modulation. As polynomial degree K increases (4→64), reconstruction quality 
+            improves significantly.
+          </figcaption>
+        </figure>
+      </div>
+      
+      <div class="card-row">
+        <article class="card">
+          <h3>🎯 Learnable Activation</h3>
+          <p>Chebyshev polynomial activations learn higher-order coefficients directly during training, expanding the representable 
+          frequency range without fragile periodic initialization schemes.</p>
+        </article>
+        <article class="card">
+          <h3>⚡ Efficient Fusion</h3>
+          <p>Low-rank ReLU layers modulated by the learnable activation output balance computational efficiency with expressive 
+          high-frequency modeling capabilities.</p>
+        </article>
+        <article class="card">
+          <h3>🚀 Superior Performance</h3>
+          <p>State-of-the-art results across images, 3D shapes, and NeRF scenes with faster convergence and stable training 
+          under varied hyperparameters.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Method Section -->
+    <section class="section accent" id="method">
+      <div class="section-heading">
+        <h2>Method Overview</h2>
+        <p>A two-block architecture designed for flexible spectral-bias tuning</p>
+      </div>
+      
+      <div class="method-blocks">
+        <div class="method-block">
+          <div class="method-number">1</div>
+          <div class="method-content">
+            <h3>Learnable Activation (LA) Block</h3>
+            <p>
+              Each activation function is parameterized using Chebyshev polynomials:
+              <br><br>
+              <span style="display: inline-block; font-style: italic; line-height: 2;">
+                ψ<sub>i,j</sub>(x) = 
+                <span style="display: inline-block; position: relative; vertical-align: middle; width: 2.5em; height: 4em; margin: 0 0.3em;">
+                  <span style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 2.5em; font-style: normal;">∑</span>
+                  <span style="position: absolute; left: 50%; top: -0.3em; transform: translateX(-50%); font-size: 0.75em; font-style: normal;">K</span>
+                  <span style="position: absolute; left: 50%; bottom: -0.3em; transform: translateX(-50%); font-size: 0.75em; font-style: normal;">k=0</span>
+                </span>
+                a<sub>i,j,k</sub> T<sub>k</sub>(tanh(x))
+              </span>
+              <br><br>
+              where <em>T<sub>k</sub></em> are Chebyshev polynomials of the first kind and <em>a<sub>i,j,k</sub></em> are learnable 
+              coefficients optimized via backpropagation. Layer normalization stabilizes training of high-order polynomials.
+            </p>
+          </div>
+        </div>
+
+        <div class="method-block">
+          <div class="method-number">2</div>
+          <div class="method-content">
+            <h3>Fusion Block with Skip Modulation</h3>
+            <p>
+              The output of the LA Block modulates each layer via element-wise products:
+              <br><br>
+              <em>z<sub>1</sub> = Ψ(x)</em><br>
+              <em>z<sub>l</sub> = ReLU(W<sub>l</sub>(z<sub>l-1</sub> ⊙ z<sub>1</sub>) + b<sub>l</sub>)</em>
+              <br><br>
+              This persistent modulation preserves high-frequency information throughout the network while maintaining 
+              computational efficiency through low-rank linear layers.
+            </p>
+          </div>
+        </div>
+
+        <div class="method-block">
+          <div class="method-number">3</div>
+          <div class="method-content">
+            <h3>Adaptive Spectral Control</h3>
+            <p>
+              The polynomial degree <em>K</em> controls the spectral spread. Higher <em>K</em> values enable the network to 
+              capture finer details and higher-frequency components. Unlike fixed activation functions, our learnable approach 
+              adapts to the data, mitigating spectral bias without manual tuning.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spectral Bias Analysis -->
+    <section class="section" id="spectral-analysis">
+      <div class="section-heading">
+        <h2>Spectral Bias Analysis</h2>
+        <p>Demonstrating reduced spectral bias on 1D function approximation</p>
+      </div>
+      
+      <div class="section-grid">
+        <figure class="media-col wide">
+          <img src="./assets/loss_spectral_bias_cvpr.png" alt="Frequency approximation error comparison across training steps">
+          <figcaption>
+            <strong>Figure 2:</strong> Convergence and frequency approximation error on a 1D periodic function with four dominant frequencies. 
+            SL²A-INR (e) shows significantly lower frequency approximation error across all frequencies compared to ReLU (b), 
+            SIREN (c), and FINER (d), demonstrating effective mitigation of spectral bias.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="highlight">
+        <div class="highlight-copy">
+          <h3>Key Observations</h3>
+          <p>
+            • ReLU exhibits strong spectral bias, learning higher frequencies very slowly<br>
+            • SIREN mitigates some bias but still struggles with high-frequency approximation<br>
+            • FINER shows improved performance but with slower convergence on some frequencies<br>
+            • <strong>SL²A-INR maintains consistently low error across all frequencies from early training</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="section accent" id="results">
+      <div class="section-heading">
+        <h2>Experimental Results</h2>
+        <p>State-of-the-art performance across diverse signal representation tasks</p>
+      </div>
+
+      <!-- Image Representation -->
+      <div class="results-subsection">
+        <h3 class="subsection-title">2D Image Representation</h3>
+        <div class="section-grid">
+          <figure class="media-col wide">
+            <img src="./assets/image.png" alt="Image representation comparison showing text detail preservation">
+            <figcaption>
+              <strong>Figure 3:</strong> Qualitative comparison on image representation. SL²A-INR produces sharper text and 
+              preserves fine details better than FINER, SIREN, Gauss, WIRE, and ReLU+P.E.
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="table-container">
+          <p class="table-caption">
+            <strong>Table 1:</strong> PSNR (dB) / SSIM comparison on DIV2K images (512×512). Best results in 
+            <span class="highlight-best">bold</span>, second-best <span class="highlight-second">underlined</span>.
+          </p>
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>#Params</th>
+                <th>Image 00</th>
+                <th>Image 05</th>
+                <th>Image 10</th>
+                <th>Image 15</th>
+                <th>Average</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>FINER</td>
+                <td>198.9K</td>
+                <td>32.00 / 0.862</td>
+                <td>32.92 / 0.889</td>
+                <td>40.08 / 0.965</td>
+                <td>36.29 / 0.932</td>
+                <td>36.35 / 0.924</td>
+              </tr>
+              <tr>
+                <td>Gauss</td>
+                <td>198.9K</td>
+                <td>30.08 / 0.847</td>
+                <td>31.33 / 0.862</td>
+                <td>39.74 / 0.961</td>
+                <td>35.59 / 0.938</td>
+                <td>34.96 / 0.914</td>
+              </tr>
+              <tr>
+                <td>ReLU+P.E.</td>
+                <td>204.0K</td>
+                <td>30.59 / 0.851</td>
+                <td>31.22 / 0.854</td>
+                <td>40.27 / 0.973</td>
+                <td>34.59 / 0.947</td>
+                <td>35.27 / 0.916</td>
+              </tr>
+              <tr>
+                <td>SIREN</td>
+                <td>198.9K</td>
+                <td>29.29 / 0.831</td>
+                <td>30.73 / 0.836</td>
+                <td>37.25 / 0.950</td>
+                <td>32.23 / 0.915</td>
+                <td>33.47 / 0.896</td>
+              </tr>
+              <tr>
+                <td>WIRE</td>
+                <td>91.6K</td>
+                <td>28.00 / 0.773</td>
+                <td>29.26 / 0.821</td>
+                <td>33.77 / 0.862</td>
+                <td>30.49 / 0.805</td>
+                <td>30.63 / 0.818</td>
+              </tr>
+              <tr class="best-row">
+                <td><strong>SL²A (Ours)</strong></td>
+                <td>330.2K</td>
+                <td><strong>33.40 / 0.892</strong></td>
+                <td><strong>34.02 / 0.903</strong></td>
+                <td><strong>41.04 / 0.974</strong></td>
+                <td><strong>36.70 / 0.951</strong></td>
+                <td><strong>36.88 / 0.933</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3D Shape Reconstruction -->
+      <div class="results-subsection">
+        <h3 class="subsection-title">3D Shape Reconstruction (Occupancy Fields)</h3>
+        <div class="section-grid-compact">
+          <div class="text-col">
+            <p>
+              For 3D shape representation, we maintain the same architectural settings as in image representation, 
+              translating 3D coordinates into signed distance function (SDF) values. We evaluate on five shapes from 
+              the Stanford 3D Scanning Repository dataset.
+            </p>
+            <p>
+              <strong>Figure 4</strong> shows the Dragon model reconstruction. SL²A-INR (0.9989 IoU) achieves superior 
+              quality with well-preserved details in both smooth low-frequency regions (body curves) and rough 
+              high-frequency areas (face details).
+            </p>
+          </div>
+          <figure class="media-col">
+            <img src="./assets/occupancy_iccv.png" alt="Dragon occupancy field reconstruction comparison">
+            <figcaption>
+              <strong>Figure 4:</strong> Occupancy volume representation comparison on the Dragon model.
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="table-container">
+          <p class="table-caption">
+            <strong>Table 2:</strong> IoU comparison on signed distance field representation (Stanford 3D Scanning Repository)
+          </p>
+          <table class="results-table compact">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Armadillo</th>
+                <th>Dragon</th>
+                <th>Lucy</th>
+                <th>Thai Statue</th>
+                <th>Bearded Man</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>FINER</td>
+                <td>0.9899</td>
+                <td>0.9895</td>
+                <td>0.9832</td>
+                <td>0.9848</td>
+                <td>0.9943</td>
+              </tr>
+              <tr>
+                <td>Gauss</td>
+                <td>0.9768</td>
+                <td>0.9968</td>
+                <td>0.9601</td>
+                <td>0.9900</td>
+                <td>0.9932</td>
+              </tr>
+              <tr>
+                <td>ReLU+P.E.</td>
+                <td>0.9870</td>
+                <td>0.9763</td>
+                <td>0.9760</td>
+                <td>0.9406</td>
+                <td>0.9939</td>
+              </tr>
+              <tr>
+                <td>SIREN</td>
+                <td>0.9895</td>
+                <td>0.9409</td>
+                <td>0.9721</td>
+                <td>0.9799</td>
+                <td>0.9948</td>
+              </tr>
+              <tr>
+                <td>WIRE</td>
+                <td>0.9893</td>
+                <td>0.9921</td>
+                <td>0.9707</td>
+                <td>0.9900</td>
+                <td>0.9911</td>
+              </tr>
+              <tr class="best-row">
+                <td><strong>SL²A (Ours)</strong></td>
+                <td><strong>0.9983</strong></td>
+                <td><strong>0.9989</strong></td>
+                <td><strong>0.9988</strong></td>
+                <td><strong>0.9986</strong></td>
+                <td><strong>0.9987</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Neural Radiance Fields -->
+      <div class="results-subsection">
+        <h3 class="subsection-title">Novel View Synthesis (NeRF)</h3>
+        <div class="table-container">
+          <p class="table-caption">
+            <strong>Table 3:</strong> PSNR (dB) on Blender dataset with 25 training images (reduced from standard 100 to test high-frequency detail capture)
+          </p>
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Chair</th>
+                <th>Drums</th>
+                <th>Ficus</th>
+                <th>Hotdog</th>
+                <th>Lego</th>
+                <th>Materials</th>
+                <th>Mic</th>
+                <th>Ship</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ReLU+P.E.</td>
+                <td>31.32</td>
+                <td>26.38</td>
+                <td>21.46</td>
+                <td>20.18</td>
+                <td>24.49</td>
+                <td>30.59</td>
+                <td>25.90</td>
+                <td>25.16</td>
+              </tr>
+              <tr>
+                <td>Gauss</td>
+                <td>32.68</td>
+                <td>33.59</td>
+                <td>22.28</td>
+                <td>23.16</td>
+                <td>26.10</td>
+                <td>32.17</td>
+                <td>28.29</td>
+                <td>26.19</td>
+              </tr>
+              <tr>
+                <td>SIREN</td>
+                <td>33.31</td>
+                <td>33.28</td>
+                <td>22.25</td>
+                <td>24.89</td>
+                <td>27.26</td>
+                <td>32.85</td>
+                <td>29.60</td>
+                <td>27.13</td>
+              </tr>
+              <tr>
+                <td>WIRE</td>
+                <td>29.31</td>
+                <td>32.35</td>
+                <td>21.15</td>
+                <td>22.22</td>
+                <td>25.91</td>
+                <td>30.11</td>
+                <td>25.76</td>
+                <td>25.05</td>
+              </tr>
+              <tr>
+                <td>FINER</td>
+                <td>33.90</td>
+                <td>33.96</td>
+                <td>22.47</td>
+                <td>24.90</td>
+                <td>28.70</td>
+                <td>33.05</td>
+                <td>30.04</td>
+                <td>27.05</td>
+              </tr>
+              <tr class="best-row">
+                <td><strong>SL²A (Ours)</strong></td>
+                <td><strong>34.70</strong></td>
+                <td><strong>33.88</strong></td>
+                <td><strong>23.43</strong></td>
+                <td>24.33</td>
+                <td>28.31</td>
+                <td><strong>33.83</strong></td>
+                <td><strong>30.63</strong></td>
+                <td><strong>28.62</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Analysis & Ablations -->
+    <section class="section" id="analysis">
+      <div class="section-heading">
+        <h2>Analysis & Ablations</h2>
+        <p>Understanding the design choices and robustness of SL²A-INR</p>
+      </div>
+
+      <!-- Robustness Analysis -->
+      <div class="section-grid">
+        <figure class="media-col wide">
+          <img src="./assets/heatmap_plot.png" alt="Heatmap showing PSNR across different batch sizes and learning rates">
+          <figcaption>
+            <strong>Figure 5:</strong> Hyperparameter robustness analysis. SL²A-INR demonstrates greater stability across learning 
+            rates and batch sizes compared to FINER, SIREN, Gauss, and other methods, requiring less careful hyperparameter tuning.
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- Ablation Cards -->
+      <div class="card-row">
+        <article class="card">
+          <h3>🔄 Block Synergy</h3>
+          <p>
+            Removing the ReLU fusion block results in a PSNR drop of up to <strong>6.22 dB</strong>, demonstrating the critical 
+            importance of coupling learnable activations with modulated ReLU layers for maintaining expressive power.
+          </p>
+        </article>
+        
+        <article class="card">
+          <h3>📊 Polynomial Degree Effect</h3>
+          <p>
+            Increasing Chebyshev polynomial degree K from 4 to 512 progressively improves performance. Skip connections 
+            (modulation) significantly enhance results, preserving high-frequency information throughout the network.
+          </p>
+        </article>
+        
+        <article class="card">
+          <h3>⚡ Computational Efficiency</h3>
+          <p>
+            Despite a modest parameter increase (0.33M vs 0.20M for baselines), SL²A-INR trains a 512² image in just 
+            <strong>0.77 minutes</strong>, faster than Gauss (3.08 min) and ReLU+PE (3.43 min).
+          </p>
+        </article>
+      </div>
+
+      <!-- NTK Analysis -->
+      <div class="section-grid" style="margin-top: 3rem;">
+        <div class="text-col">
+          <h3>Neural Tangent Kernel (NTK) Perspective</h3>
+          <p>
+            The eigenvalue distribution of the Neural Tangent Kernel provides insights into training dynamics. 
+            Components corresponding to larger eigenvalues are learned faster, which is crucial for overcoming spectral bias.
+          </p>
+          <p>
+            Increasing K in SL²A-INR reduces the rate of eigenvalue decay, resulting in higher values that enhance the 
+            model's ability to capture high-frequency components. The figure shows a hierarchy: ReLU exhibits the most 
+            rapid decay, followed by SIREN, then FINER, with SL²A-INR maintaining the slowest decay—preserving spectral 
+            properties most effectively.
+          </p>
+        </div>
+        <figure class="media-col">
+          <img src="./assets/eigenvalues_distribution_modified.png" alt="NTK eigenvalue distribution comparison">
+          <figcaption>
+            <strong>Figure 6:</strong> NTK eigenvalue distribution showing SL²A-INR's superior spectral properties with slower 
+            decay, enabling better high-frequency learning.
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- Super-resolution -->
+      <div class="highlight" style="margin-top: 3rem;">
+        <div class="highlight-copy">
+          <h3>Single Image Super-Resolution</h3>
+          <p>
+            To demonstrate generalization to inverse problems, we evaluated SL²A-INR on single-image super-resolution (×2, ×4, ×6 upsampling). 
+            Our method consistently outperforms FINER with higher PSNR and SSIM while producing less noisy, sharper results—particularly 
+            visible in the ×6 setting where texture preservation is critical.
+          </p>
+        </div>
+        <figure class="media-col">
+          <img src="./assets/super_resolution_comparison.png" alt="Super-resolution comparison showing better detail preservation">
+          <figcaption>
+            <strong>Figure 7:</strong> Single-image super-resolution comparison on a parrot image (1356×2040×3) demonstrates 
+            superior detail preservation and noise reduction.
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- Initialization Robustness -->
+      <div class="card-row" style="margin-top: 2rem;">
+        <article class="card">
+          <h3>🎲 Initialization Robustness</h3>
+          <p>
+            Unlike SIREN which is highly sensitive to initialization schemes, SL²A-INR maintains stable performance across 
+            Xavier uniform, Kaiming uniform/normal, and orthogonal initialization (PSNR variance &lt; 1.5 dB).
+          </p>
+        </article>
+        
+        <article class="card">
+          <h3>🔧 Design Rationale</h3>
+          <p>
+            Chebyshev polynomials offer superior convergence, numerical stability, and minimax approximation properties 
+            compared to B-splines. They efficiently capture high-frequency components with fewer parameters and better stability.
+          </p>
+        </article>
+        
+        <article class="card">
+          <h3>📈 Scalability</h3>
+          <p>
+            Using learnable activations only in the first layer with low-rank MLPs in subsequent layers provides an optimal 
+            trade-off between expressivity and computational efficiency, avoiding the scalability issues of full KAN architectures.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="section accent" id="resources">
+      <div class="section-heading">
+        <h2>Resources</h2>
+      </div>
+      
+      <div class="resource-grid">
+        <div class="resource-card">
+          <h3>📄 Paper</h3>
+          <p>Read the full paper with detailed experiments, theory, and supplementary materials.</p>
+          <a class="btn small primary" href="https://arxiv.org/abs/2409.10836" target="_blank" rel="noreferrer noopener">arXiv</a>
+          <a class="btn small outline" href="./assets/paper.pdf" target="_blank" rel="noreferrer noopener" style="margin-left: 0.5rem;">PDF</a>
+        </div>
+        
+        <div class="resource-card">
+          <h3>💻 Code</h3>
+          <p>PyTorch implementation with training scripts, SL²A module, and dataset loaders.</p>
+          <a class="btn small primary" href="https://github.com/Iceage7/SL2A-INR" target="_blank" rel="noreferrer noopener">GitHub Repository</a>
+        </div>
+        
+        <div class="resource-card">
+          <h3>📧 Contact</h3>
+          <p>For questions, collaborations, or discussions about the work.</p>
+          <p style="margin-top: 1rem; font-size: 0.95rem;">
+            <a href="mailto:moein.heidari@ubc.ca">moein.heidari@ubc.ca</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- BibTeX Citation -->
+      <div class="bibtex">
+        <h3>Citation</h3>
+<pre><code>@article{heidari2024sl2a,
+  title={SL$^{2}$A-INR: Single-Layer Learnable Activation for Implicit Neural Representation},
+  author={Heidari, Moein and Rezaeian, Reza and Azad, Reza and 
+          Merhof, Dorit and Soltanian-Zadeh, Hamid and Hacihaliloglu, Ilker},
+  journal={arXiv preprint arXiv:2409.10836},
+  year={2024},
+  note={Accepted to ICCV 2025}
+}</code></pre>
+      </div>
+
+      <!-- Acknowledgements -->
+      <div class="acknowledgements">
+        <h3>Acknowledgements</h3>
+        <p>
+          This work was supported by the Canadian Foundation for Innovation-John R. Evans Leaders Fund (CFI-JELF) program 
+          grant number 42816, Mitacs Accelerate program grant number AWD024298-IT33280, and the Natural Sciences and 
+          Engineering Research Council of Canada (NSERC), RGPIN-2023-03575.
+        </p>
+        <p>
+          We thank the authors of <a href="https://github.com/SynodicMonth/ChebyKAN" target="_blank">ChebyKAN</a>, 
+          <a href="https://github.com/vishwa91/wire" target="_blank">WIRE</a>, and 
+          <a href="https://github.com/liuzhen0212/FINER" target="_blank">FINER</a> for their publicly available code.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 SL²A-INR Authors. Accepted to ICCV 2025.</p>
+    <a class="back-to-top" href="#top">Back to top ↑</a>
+  </footer>
+
+  <script>
+    // Mobile navigation toggle
+    const toggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    toggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      toggle.classList.toggle('open');
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Close mobile menu if open
+          navLinks.classList.remove('open');
+          toggle.classList.remove('open');
+        }
+      });
+    });
+
+    // Add intersection observer for fade-in animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe sections for animations
+    document.querySelectorAll('.section').forEach(section => {
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(20px)';
+      section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(section);
+    });
+  </script>
+</body>
+</html>

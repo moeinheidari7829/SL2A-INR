@@ -1,0 +1,79 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+ENV/
+env/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+*.out
+
+# Model checkpoints & results
+*.pt
+*.pth
+*.ckpt
+checkpoints/
+results/
+outputs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo
+*~
+
+# Documentation that was removed
+*.txt
+!requirements.txt
+cleanup-website.sh
+QUICK_DEPLOY.sh
+
+# LaTeX/Paper source (keep private)
+arxiv/
+paper.pdf
+paper.txt
+paper_layout.txt
+page-*.png
+figure-*.png
+reference.html
+
+# Keep only website directory for GitHub Pages

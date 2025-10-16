@@ -1,77 +1,50 @@
-# SL²A-INR: Single-Layer Learnable Activation for Implicit Neural Representation  
+# SL²A-INR: Single-Layer Learnable Activation for Implicit Neural Representation
 
-This repository contains the implementation for the ![ICCV 2025](https://img.shields.io/badge/ICCV-2025-purple?style=for-the-badge&logo=google-scholar) paper:  
-📄 **[SL²A-INR: Single-Layer Learnable Activation for Implicit Neural Representation](https://arxiv.org/abs/2409.10836)**
+[![ICCV 2025](https://img.shields.io/badge/ICCV-2025-blue)](https://arxiv.org/abs/2409.10836)
+[![arXiv](https://img.shields.io/badge/arXiv-2409.10836-b31b1b.svg)](https://arxiv.org/abs/2409.10836)
+[![Project Page](https://img.shields.io/badge/Project-Page-green)](https://YOUR-USERNAME.github.io/SL2A-INR/)
 
----
-
-## 📄 Abstract
-
-Implicit Neural Representation (INR), leveraging a neural network to transform coordinate input into corresponding attributes, has recently driven significant advances in several vision-related domains. However, the performance of INR is heavily influenced by the choice of the nonlinear activation function used in its multilayer perceptron (MLP) architecture. To date, multiple nonlinearities have been investigated, but current INRs still face limitations in capturing high-frequency components and diverse signal types. 
-
-We show that these challenges can be alleviated by introducing a novel approach in INR architecture. Specifically, we propose **SL²A-INR**, a hybrid network that combines a single-layer learnable activation function with an MLP that uses traditional ReLU activations. Our method performs superior across diverse tasks, including image representation, 3D shape reconstruction, and novel view synthesis. Through comprehensive experiments, SL²A-INR sets new benchmarks in accuracy, quality, and robustness for INR.
+**[Project Website](https://YOUR-USERNAME.github.io/SL2A-INR/)** | **[Paper](https://arxiv.org/abs/2409.10836)** | **[Code](https://github.com/Iceage7/SL2A-INR)**
 
 ---
 
-## 🔧 Installation
+## Abstract
 
-Install the required dependencies from the `requirements.txt` file:
+Implicit Neural Representation (INR), leveraging a neural network to transform coordinate input into corresponding attributes, has recently driven significant advances in several vision-related domains. However, the performance of INR is heavily influenced by the choice of the nonlinear activation function used in its multilayer perceptron (MLP) architecture.
+
+We propose **SL²A-INR**, a hybrid network that combines a single-layer learnable activation function with an MLP that uses traditional ReLU activations. Our method achieves superior performance across diverse tasks, including image representation, 3D shape reconstruction, and novel view synthesis.
+
+## Installation
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
+## Usage
 
-## 🚀 Usage
-
-Train the model using the `train.py` script. You need to specify the path to the input data and the INR model to use.
-
-### 🔢 Training Arguments
-
-- `--input`: Path to the input image (e.g., `./data/00.png`)  
-- `--inr_model`: The INR model to train. Options include:  
-  `gauss`, `relu`, `siren`, `wire`, `finer`, and our proposed `sl2a`.
-
-### 🧪 Example
-
-To train the **SL²A-INR** model on a sample image:
+Train the model:
 
 ```bash
 python train.py --input ./data/00.png --inr_model sl2a
 ```
 
-For more options and configurations, please refer to the `train.py` file.
-
----
-
-## ✅ To-Do
-
-- [ ] Add Novel View Synthesis (NeRF) code.
-
----
-
-## 🙏 Acknowledgements
-
-We thank the authors of the following repositories for their publicly available code, which greatly supported our research:
-
-- [ChebyKAN](https://github.com/SynodicMonth/ChebyKAN)
-- [WIRE](https://github.com/vishwa91/wire)
-- [FINER](https://github.com/liuzhen0212/FINER)
-
----
-
-## 📚 Citation
-
-If you find our work useful, please consider citing:
+## Citation
 
 ```bibtex
-@article{heidari2024sl,
-  title={SL\textsuperscript{2}A-INR: Single-Layer Learnable Activation for Implicit Neural Representation},
-  author={Heidari, Moein and Rezaeian, Reza and Azad, Reza and Merhof, Dorit and Soltanian-Zadeh, Hamid and Hacihaliloglu, Ilker},
+@article{heidari2024sl2a,
+  title={SL$^{2}$A-INR: Single-Layer Learnable Activation for Implicit Neural Representation},
+  author={Heidari, Moein and Rezaeian, Reza and Azad, Reza and 
+          Merhof, Dorit and Soltanian-Zadeh, Hamid and Hacihaliloglu, Ilker},
   journal={arXiv preprint arXiv:2409.10836},
-  year={2024}
+  year={2024},
+  note={Accepted to ICCV 2025}
 }
 ```
----
 
+## Contact
+
+For questions: [moein.heidari@ubc.ca](mailto:moein.heidari@ubc.ca)
+
+## Acknowledgements
+
+This work was supported by the Canadian Foundation for Innovation-John R. Evans Leaders Fund (CFI-JELF), Mitacs Accelerate program, and NSERC.
