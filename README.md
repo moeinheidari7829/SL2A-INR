@@ -2,9 +2,9 @@
 
 [![ICCV 2025](https://img.shields.io/badge/ICCV-2025-blue)](https://arxiv.org/abs/2409.10836)
 [![arXiv](https://img.shields.io/badge/arXiv-2409.10836-b31b1b.svg)](https://arxiv.org/abs/2409.10836)
-[![Project Page](https://img.shields.io/badge/Project-Page-green)](https://YOUR-USERNAME.github.io/SL2A-INR/)
+[![Project Page](https://img.shields.io/badge/Project-Page-green)](https://moeinheidari7829.github.io/SL2A-INR/)
 
-**[Project Website](https://YOUR-USERNAME.github.io/SL2A-INR/)** | **[Paper](https://arxiv.org/abs/2409.10836)** | **[Code](https://github.com/Iceage7/SL2A-INR)**
+**[Project Website](https://moeinheidari7829.github.io/SL2A-INR/)** | **[Paper](https://arxiv.org/abs/2409.10836)** | **[Code](https://github.com/Iceage7/SL2A-INR)**
 
 ---
 
